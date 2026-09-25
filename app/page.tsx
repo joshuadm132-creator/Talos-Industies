@@ -1,50 +1,48 @@
-import Nav from "@/components/nav";
+
 import {Hero} from "@/components/hero";
 import About from "@/components/about"
 import Services from "@/components/services"
-
+import { business } from "@/config/business";
+import Gallery from "@/components/galler";
 export default function Home() {
   return (
    <main className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-500 selection:text-white">
-      <Nav logo ="Template Business" />
-     <Hero 
-      title="place hero tag"
-      description="We provide quality services for our customers."
-      />
+    <Hero
+      title={business.name}
+      description={business.description}
+    />
     <About
-        title="About Our Business"
-        description="We provide reliable automotive services to customers in Harare."
+        title={business.About.title}
+        description= {business.About.description}
       />
     <Services
-        services={[
+        services={business.services}
+      />
+
+    <Gallery
+        items={[
           {
-            title: "Engine Repairs",
-            description: "Professional engine diagnostics and repairs.",
+            title: "Engine Diagnostics",
+            src: "https://placehold.co/600x800?text=Engine+Diagnostics",
+            alt: "Engine diagnostics",
           },
           {
-            title: "Brake Services",
-            description: "Brake inspection, maintenance and repairs.",
+            title: "Brake Replacement",
+            src: "https://placehold.co/600x800?text=Brake+Replacement",
+            alt: "Brake replacement",
           },
           {
-            title: "Oil Changes",
-            description: "Keep your engine running smoothly.",
-          },
-           {
-            title: "window Tint",
-            description: "Professional engine diagnostics and repairs.",
-          },
-          {
-            title: "Carb clean",
-            description: "Brake inspection, maintenance and repairs.",
-          },
-          {
-            title: "Happy ending",
-            description: "Keep your engine running smoothly.",
+            title: "Suspension Tuning",
+            src: "https://placehold.co/600x800?text=Suspension+Tuning",
+            alt: "Suspension tuning",
           },
         ]}
       />
+
     </main>
+
+
   );
+  
 }
 
-console.log("Hieeeee")
