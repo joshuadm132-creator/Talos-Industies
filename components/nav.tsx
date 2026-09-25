@@ -7,15 +7,16 @@ export default function Nav( {logo}:{logo:string}) {
           {logo}
         </h2>
       </div>
-      <div className="flex flex-col items-center  ">
-        <a href="/" className=" md:border-0 border md:m-0 m-2 px-[50%] py-[5%] text-gray-600 hover:text-black hover:shadow">
+      <div className="flex gap-6">
+        <a href="/" className="text-gray-600 hover:text-black">
           Home
         </a>
-        <a href="/about" className="  md:border-0 border md:m-0 px-[50%] py-[5%] m-2 text-gray-600 hover:text-black hover:shadow">
+
+        <a href="/about" className="text-gray-600 hover:text-black">
           About
         </a>
 
-        <a href="/contact" className=" md:border-0 border md:m-0 px-[50%] py-[5%] m-2 text-gray-600 hover:text-black hover:shadow">
+        <a href="/contact" className="text-gray-600 hover:text-black">
           Contact
         </a>
       </div>
