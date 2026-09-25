@@ -1,3 +1,34 @@
+# Modern Small-Business Website Template
+
+A modular, data-driven, reusable modern small-business website template built with Next.js, React, TypeScript, and Tailwind CSS. Designed to be easily customizable for different small businesses through central configuration data without rewriting code.
+
+---
+
+## 🛠 Tech Stack & Prerequisites
+
+* **Framework:** [Next.js](https://nextjs.org/) (App Router)
+* **Library:** [React](https://react.dev/)
+* **Language:** [TypeScript](https://www.typescriptlang.org/)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Build Tool:** [Turbopack](https://turbo.build/pack)
+* **Linting:** [ESLint](https://eslint.org/)
+
+### Requirements
+* **Node.js:** `v20.x` or higher (Tested on `v20.20.2`)
+* **npm:** `v10.x` or higher (Tested on `10.8.2`)
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up the repository locally for development.
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/](https://github.com/)<your-username>/business-template.git
+cd business-template
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
