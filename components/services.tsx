@@ -237,13 +237,13 @@ function ServiceDetail({ service }: { service: Service }) {
 
         {/* Visual column — image or a placeholder */}
         <div className="order-first md:order-last">
-          <div className="aspect-[4/3] rounded-xl overflow-hidden bg-background border border-border">
+          <div className="aspect-[6/4] rounded-xl overflow-hidden bg-background border border-border">
             {service.content?.[0]?.image ? (
               <Image
                 src={service.content[0].image}
                 alt={service.title}
                 width={800}
-                height={600}
+                height={800}
                 className="w-full h-full object-cover"
               />
             ) : (
