@@ -25,3 +25,11 @@ export default function Home() {
       </main>
   );
 }
+
+export const metadata = {
+  title: "Web Design & Development Services | Talos Industries",
+  description: "Custom websites, property listings, payment integration, and SEO for businesses in Harare and across Zimbabwe.",
+  alternates: {
+    canonical: "/services",
+  },
+};

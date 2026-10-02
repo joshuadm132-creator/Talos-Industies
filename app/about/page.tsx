@@ -66,3 +66,14 @@ export default function AboutPage() {
     </main>
   );
 }
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Talos Industries is a Harare-based web design studio building modern websites for growing businesses across Zimbabwe and Southern Africa.",
+  alternates: {
+    canonical: "/about",
+  },
+};

@@ -71,3 +71,14 @@ export default function Home() {
   
 }
 
+//SEO AND AEO
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Custom Web Design in Harare, Zimbabwe",
+  description:
+    "Talos Industries builds custom websites for Zimbabwe businesses. Fast, responsive, SEO ready. Starter sites from $250 with monthly care plans from $15.",
+  alternates: {
+    canonical: "/",
+  },
+};

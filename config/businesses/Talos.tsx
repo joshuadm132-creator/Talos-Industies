@@ -550,7 +550,7 @@ export const Talos = {
           "Our team combines creativity, practical technology, and modern design to create professional, responsive, and user friendly digital experiences tailored to each client's needs.",
           "Whether you're a startup, a small business, an organization, or an individual looking to broaden your brand in the digital world, we're here to turn your ideas into a website you can be proud of.",
         ],
-        image: "/images/about/talos-team.jpg",
+        image: "/Logo-removebg-preview.png",
       },
       {
         id: "mission",
@@ -590,7 +590,7 @@ export const Talos = {
           "We work in the open. Weekly demos, clear timelines, and no surprise invoices. If something changes, you hear it from us first.",
         ],
         features: [
-          "Handwritten code, no shortcuts",
+          "Human reviewed code, no shortcuts",
           "Weekly progress demos",
           "Transparent fixed pricing",
           "You own the site and its code",

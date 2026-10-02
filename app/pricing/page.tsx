@@ -17,3 +17,8 @@ export default function PricingPage() {
     </main>
   );
 }
+
+export const metadata = {
+  title: "Packages & Care Plans | Talos Industries",
+  description: "Transparent website packages and monthly care plans for Zimbabwe businesses. Starter, Business, and Pro builds from $250.",
+};
