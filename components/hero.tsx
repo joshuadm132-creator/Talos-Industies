@@ -1,6 +1,6 @@
 import Link from "next/link";
 import FadeRotator from "@/components/FadeRotator";
-import CodeTyper from "./components/CodeTyper";
+import CodeTyper from "@/components/CodeTyper";
 import { business } from "@/config/business";
 
 /* ============================================================

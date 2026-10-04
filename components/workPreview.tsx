@@ -41,6 +41,16 @@ const WORK_ITEMS: WorkItem[] = [
     image: "preview_Sites/image.png",
     result: "Private portfolio",
   },
+   {
+    id: "Catalog",
+    title: "Business catalog.",
+    category: "Sales · Listing · Products ",
+    href: "https://catalog-template-gs-agency-two.vercel.app/products",
+    displayUrl: "https://catalog-template-gs-agency-two.vercel.app/products",
+    image: "preview_Sites/Catalog.png",
+    result: "Business sales Catalogue",
+  },
+
   
 ];
 
@@ -74,7 +84,7 @@ export default function OurWork({
 
   return (
     <section className={`py-20 px-6 ${bgClass}`}>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="max-w-2xl">
           <h2
