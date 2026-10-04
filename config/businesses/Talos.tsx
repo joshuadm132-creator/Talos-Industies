@@ -28,7 +28,7 @@ export const Talos = {
     phone: "(+263) 77 123 4567",
     email: "info@talosindustries.co.zw",
     address: "Harare, Zimbabwe",
-    whatsapp: "263771234567",
+    whatsapp: "0788237076",
 
     socials: [
       { label: "Instagram", href: "https://instagram.com/talos", icon: "instagram" },
@@ -152,7 +152,7 @@ export const Talos = {
       "Everything you need to establish, launch, and maintain a professional presence online. Built with care and kept current.",
     variant: "cards" as const,
     columns: 3 as const,
-    background: "white" as const,
+    background: "gray" as const,
     items: [
       {
         id: "websites",
@@ -191,14 +191,14 @@ export const Talos = {
       },
       {
         id: "accessibility",
-        icon: "05",
+        icon: "06",
         title: "Accessibility",
         description:
           "Sites that work for everyone, including people using screen readers, keyboard navigation, or slow connections.",
       },
       {
         id: "maintenance",
-        icon: "06",
+        icon: "07",
         title: "Ongoing Maintenance",
         description:
           "Content updates, security patching, uptime monitoring, and periodic performance checks after launch.",
@@ -214,7 +214,7 @@ export const Talos = {
       "We are a focused web studio. Being clear about what we don't do helps us serve the clients we do take on exceptionally well.",
     variant: "list" as const,
     columns: 2 as const,
-    background: "gray" as const,
+    background: "dark" as const,
     items: [
       {
         id: "no-ecommerce-platform",
@@ -291,7 +291,7 @@ export const Talos = {
       "If your business is only on social media or word of mouth, you're leaving growth on the table. Here's what a proper website actually does for you.",
     variant: "reasons" as const,
     columns: 2 as const,
-    background: "white" as const,
+    background: "gray" as const,
     items: [
       {
         id: "credibility",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import FadeRotator from "@/components/FadeRotator";
-import GrowthChart from "@/components/growthChart";
+import CodeTyper from "./components/CodeTyper";
 import { business } from "@/config/business";
 
 /* ============================================================
@@ -78,9 +78,9 @@ function HomeHero({ title, description }: HomeHeroProps) {
           {/* RIGHT: Chart */}
           <div className="relative">
             <p className="text-sm font-semibold text-accent uppercase tracking-wide">
-              Website Growth Worldwide
+              How we do things
             </p>
-            <GrowthChart />
+            <CodeTyper />
           </div>
         </div>
       </div>

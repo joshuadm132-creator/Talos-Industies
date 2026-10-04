@@ -16,27 +16,34 @@ export default function Home() {
         description="..."
       />
 
-      <FeatureGrid
-        eyebrow={business.whatWeDo.eyebrow}
-        title={business.whatWeDo.title}
-        subtitle={business.whatWeDo.subtitle}
-        items={business.whatWeDo.items}
-        variant={business.whatWeDo.variant}
-        columns={business.whatWeDo.columns}
-        background={business.whatWeDo.background}
-        cta={business.whatWeDo.cta}
-      />
+    <FeatureGrid
+      eyebrow={business.whatWeDo.eyebrow}
+      title={business.whatWeDo.title}
+      subtitle={business.whatWeDo.subtitle}
+      items={business.whatWeDo.items}
+      variant={business.whatWeDo.variant}
+      columns={business.whatWeDo.columns}
+      background={business.whatWeDo.background}
+      cta={business.whatWeDo.cta}
+    />
 
-          <FeatureGrid
-        eyebrow={business.whyYouNeedWebsite.eyebrow}
-        title={business.whyYouNeedWebsite.title}
-        subtitle={business.whyYouNeedWebsite.subtitle}
-        items={business.whyYouNeedWebsite.items}
-        variant={business.whyYouNeedWebsite.variant}
-        columns={business.whyYouNeedWebsite.columns}
-        background={business.whyYouNeedWebsite.background}
-        cta={business.whyYouNeedWebsite.cta}
-      />
+    <Services
+      headline={business.services.headline}
+      subheadline={business.services.subheadline}
+      services={business.services.contents}
+      variant="preview"
+    />
+
+    <FeatureGrid
+      eyebrow={business.whyYouNeedWebsite.eyebrow}
+      title={business.whyYouNeedWebsite.title}
+      subtitle={business.whyYouNeedWebsite.subtitle}
+      items={business.whyYouNeedWebsite.items}
+      variant={business.whyYouNeedWebsite.variant}
+      columns={business.whyYouNeedWebsite.columns}
+      background={business.whyYouNeedWebsite.background}
+      cta={business.whyYouNeedWebsite.cta}
+    />
 
       <FeatureGrid
         eyebrow={business.whatWeDontDo.eyebrow}
@@ -49,18 +56,13 @@ export default function Home() {
       />
    
     <OurWork />
-  <Process
+    <Process
           title={business.process.title}
           subtitle={business.process.subtitle}
           steps={business.process.steps}
           variant="flow"
         />
-   <Services
-      headline={business.services.headline}
-      subheadline={business.services.subheadline}
-      services={business.services.contents}
-      variant="preview"
-    />
+  
      
 
 

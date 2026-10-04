@@ -132,10 +132,10 @@ export default function FeatureGrid({
 
 function CardItem({ item }: { item: FeatureItem }) {
   return (
-    <div className="h-full p-6 rounded-xl border border-border bg-background shadow-sm hover:shadow-md transition">
+    <div className="h-full p-6  border border-border bg-background shadow-sm hover:shadow-md transition">
       {item.icon && (
-        <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
-          {item.icon}
+        <div className="w-10 h-10  bg-primary/10 text-primary flex items-center justify-center font-bold">
+          {item.icon}.
         </div>
       )}
       <h3 className="mt-4 text-lg font-heading font-semibold text-text">
@@ -150,8 +150,8 @@ function CardItem({ item }: { item: FeatureItem }) {
 
 function ListItem({ item }: { item: FeatureItem }) {
   return (
-    <div className="flex gap-4 p-5 rounded-xl border border-border bg-background">
-      <div className="shrink-0 w-8 h-8 rounded-full bg-red-300 text-text-muted flex items-center justify-center font-bold">
+    <div className="flex gap-4 p-5  border border-border bg-background">
+      <div className="shrink-0 w-8 h-8  bg-red-300 text-text-muted flex items-center justify-center font-bold">
         ✕
       </div>
       <div>
@@ -168,8 +168,8 @@ function ListItem({ item }: { item: FeatureItem }) {
 
 function ReasonItem({ item, index }: { item: FeatureItem; index: number }) {
   return (
-    <div className="flex gap-4 p-5 rounded-xl bg-background border border-border">
-      <div className="shrink-0 w-10 h-10 rounded-full bg-accent text-text-inverse flex items-center justify-center font-bold">
+    <div className="flex gap-4 p-5 bg-background border border-border">
+      <div className="shrink-0 w-10 h-10 bg-accent text-text-inverse flex items-center justify-center font-bold">
         {String(index + 1).padStart(2, "0")}
       </div>
       <div>
