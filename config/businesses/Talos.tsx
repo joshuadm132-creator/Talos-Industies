@@ -7,13 +7,13 @@ type SocialConfig = {
   icon: SocialIconName;
 };
 
-export const Talos = {
+export const Valis = {
   /* ============================================================
      BRAND
      ============================================================ */
 
-  name: "Talos Industries",
-  logo: "TALOS",
+  name: "Valis Tech",
+  logo: "Valis",
   logoImage: "/talos-logo.png",
   tagline: "African Advancement",
   description: "Building the digital infrastructure for growing businesses",
@@ -26,7 +26,7 @@ export const Talos = {
 
   contact: {
     phone: "(+263) 77 123 4567",
-    email: "info@talosindustries.co.zw",
+    email: "info@ValisDigital.co.zw",
     address: "Harare, Zimbabwe",
     whatsapp: "0788237076",
 
@@ -976,7 +976,7 @@ export const Talos = {
      ============================================================ */
 
   footerData: {
-    companyName: "Talos Industries",
+    companyName: "Valis Tech",
     description: "Modern websites and ongoing care for growing businesses.",
     sections: [
       {
