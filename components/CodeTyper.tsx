@@ -76,7 +76,7 @@ export default function CodeTyper({
   return (
     <div
       ref={containerRef}
-      className="w-full max-w-3xl overflow-hidden rounded-2xl bg-slate-950 border border-slate-300 shadow-xl"
+      className="w-full max-w-2xl overflow-hidden bg-slate-950 border border-slate-600 shadow-xl"
     >
       {/* Window header */}
       <div className="flex items-center gap-2 border-b border-slate-800 px-4 py-3">
@@ -89,7 +89,7 @@ export default function CodeTyper({
       </div>
 
       {/* Code */}
-      <pre className="overflow-x-auto p-6 text-sm leading-7 text-yellow-500">
+      <pre className="overflow-x-auto p-3 text-sm leading-6 bg-gradient-to-r from-blue-600 via-green-500 to-red-400 bg-clip-text text-transparent">
         <code>{displayedCode}</code>
 
         {/* Cursor */}

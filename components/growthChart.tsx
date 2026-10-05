@@ -19,9 +19,6 @@ type GrowthChartProps = {
 
 // 16 years, roughly exponential growth
 const DEFAULT_DATA: DataPoint[] = [
-
-
-
 { value: 2, label: "2008" },
 { value: 7, label: "2009" },
   { value: 7, label: "2010" },
