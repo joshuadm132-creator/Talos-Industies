@@ -365,6 +365,7 @@ function IncludedEverywhere({
   );
 }
 
+
 /* ---------- Comparison table ---------- */
 
 function ComparisonTable({
@@ -376,41 +377,114 @@ function ComparisonTable({
 }) {
   return (
     <Reveal>
-      <div className="mt-20">
-        <h3 className="text-2xl font-heading font-bold text-center text-text mb-8">
+      <div className="mt-12 sm:mt-16 md:mt-20">
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-center text-text mb-3 sm:mb-8">
           Compare Packages
         </h3>
-        <div className="overflow-x-auto bg-background border border-border rounded-2xl shadow-sm">
-          <table className="w-full text-left border-collapse min-w-[600px]">
+
+        {/* Mobile scroll hint */}
+        <p className="mb-4 text-center text-xs text-text-muted sm:hidden">
+          ← Swipe to compare packages →
+        </p>
+
+        <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-border bg-background shadow-sm">
+          <table className="w-full min-w-[650px] border-collapse text-left">
+            
+            {/* TABLE HEADER */}
             <thead>
               <tr className="border-b border-border bg-surface">
-                <th className="p-4 font-semibold text-text w-2/5">Feature</th>
+                
+                {/* Feature column */}
+                <th
+                  scope="col"
+                  className="
+                    sticky left-0 z-20
+                    w-[38%]
+                    min-w-[180px]
+                    border-r border-border
+                    bg-surface
+                    px-3 py-3
+                    text-xs font-semibold text-text
+                    sm:px-4 sm:py-4 sm:text-sm
+                  "
+                >
+                  Feature
+                </th>
+
+                {/* Tier columns */}
                 {tiers.map((tier) => (
                   <th
                     key={tier.id}
-                    className="p-4 font-semibold text-text text-center"
+                    scope="col"
+                    className="
+                      min-w-[150px]
+                      px-3 py-3
+                      text-center
+                      text-xs font-semibold text-text
+                      sm:px-4 sm:py-4 sm:text-sm
+                    "
                   >
                     {tier.name}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border text-sm text-text">
+
+            {/* TABLE BODY */}
+            <tbody className="divide-y divide-border text-xs text-text sm:text-sm">
               {rows.map((row, index) => (
-                <tr key={index} className="hover:bg-surface transition-colors">
-                  <td className="p-4 font-medium text-text">{row.featureName}</td>
+                <tr
+                  key={index}
+                  className="transition-colors hover:bg-surface"
+                >
+                  {/* Feature name */}
+                  <td
+                    className="
+                      sticky left-0 z-10
+                      border-r border-border
+                      bg-background
+                      px-3 py-3
+                      font-medium
+                      sm:px-4 sm:py-4
+                    "
+                  >
+                    {row.featureName}
+                  </td>
+
+                  {/* Tier values */}
                   {tiers.map((tier) => {
                     const val = row.tierValues[tier.id];
+
                     return (
-                      <td key={tier.id} className="p-4 text-center">
+                      <td
+                        key={tier.id}
+                        className="
+                          min-w-[150px]
+                          px-3 py-3
+                          text-center
+                          sm:px-4 sm:py-4
+                        "
+                      >
                         {typeof val === "boolean" ? (
                           val ? (
-                            <span className="text-accent font-bold">✓</span>
+                            <span
+                              className="text-base font-bold text-accent sm:text-lg"
+                              aria-label="Included"
+                            >
+                              ✓
+                            </span>
                           ) : (
-                            <span className="text-text-muted/50">—</span>
+                            <span
+                              className="text-text-muted/40"
+                              aria-label="Not included"
+                            >
+                              —
+                            </span>
                           )
                         ) : (
-                          <span>{val ?? "—"}</span>
+                          <span className="leading-relaxed">
+                            {val ?? "—"}
+                          </span>
                         )}
                       </td>
                     );
@@ -424,6 +498,8 @@ function ComparisonTable({
     </Reveal>
   );
 }
+
+
 
 /* ---------- Add-ons block ---------- */
 

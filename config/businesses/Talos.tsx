@@ -424,13 +424,13 @@ export const Valis = {
         button: { text: "Ask About Payments", href: "/contact" },
       },
       {
-  id: "aeo",
-  tag: "AEO",
-  title: "Answer Engine Optimisation",
-  description:
-    "Help your business appear in AI generated answers and search results when customers ask questions related to your products and services.",
-  content: [
-      {
+      id: "aeo",
+      tag: "AEO",
+      title: "Answer Engine Optimisation",
+      description:
+        "Help your business appear in AI generated answers and search results when customers ask questions related to your products and services.",
+      content: [
+        {
         id: "aeo-section",
         subtitle: "Helping customers find you through AI and search",
         paragraphs: [
@@ -448,10 +448,10 @@ export const Valis = {
         ],
         image:"services/AEO.png",
       },
-    ],
-    button: { text: "Improve Your Online Visibility", href: "/contact" },
-  },
-      {
+        ],
+        button: { text: "Improve Your Online Visibility", href: "/contact" },
+      },
+          {
         id: "seo",
         tag: "SEO",
         title: "Search Engine Optimisation",
@@ -527,7 +527,173 @@ export const Valis = {
         button: { text: "See Care Plans", href: "/pricing" },
       },
     ],
+    walkthrough: {
+      id: "domain-setup",
+
+      eyebrow: "How We Work",
+
+      title: "Your Domain, Your Name",
+
+      description:
+        "We help you get your own domain and make sure it remains fully owned and controlled by you. This walkthrough shows how we guide you through choosing, purchasing and connecting your domain to your website.",
+
+      contents: [
+        {
+          id: "domain-ownership",
+
+          subtitle: "Why your domain is registered in your name",
+
+          description:
+            "Your domain is one of the most important assets your business will own online, so we believe it should always belong to you.",
+
+          paragraphs: [
+            "Your domain, such as yourbusiness.com, is the address customers will use to find your business online. From day one, we make sure it is registered in your name, under your own account and using your own payment method.",
+            "If a domain is registered under a developer's account instead of the business owner's, the business may not have full control over its own website address. We do not work that way. You hold the keys to your domain and we help you manage the technical side."
+          ],
+
+          features: [
+            "Registered under your name and email",
+            "You hold the account login",
+            "No hidden dependency on our company",
+            "You can switch developers in the future"
+          ]
+        },
+
+        {
+          id: "choose-domain",
+
+          subtitle: "Choose the right domain name",
+
+          description:
+            "We help you choose a domain name that represents your business and check that it is available.",
+
+          paragraphs: [
+            "During the project kickoff, we discuss the name you would like to use and check its availability. If your preferred domain is already taken, we can help you consider suitable alternatives.",
+            "For a standard .com domain, we can point you towards a trusted registrar such as Namecheap. If you prefer a Zimbabwean domain such as .co.zw, we can help you find an appropriate local registrar."
+          ],
+
+          features: [
+            "Choose your preferred business name",
+            "Check domain availability",
+            "Consider suitable alternatives",
+            "Choose between .com and local domain options"
+          ]
+        },
+
+        {
+          id: "create-account",
+
+          subtitle: "Create your own registrar account",
+
+          description:
+            "You create the registrar account yourself so that the domain is registered directly under your control.",
+
+          paragraphs: [
+            "You will create your own account using your own email address and payment method. We can guide you through the process while you remain in control of the account.",
+            "The process is straightforward and usually takes only a few minutes."
+          ],
+
+          features: [
+            "Your own email address",
+            "Your own account",
+            "Your own password",
+            "Your own payment method"
+          ]
+        },
+
+        {
+          id: "purchase-domain",
+
+          subtitle: "Purchase your domain",
+
+          description:
+            "Once you have chosen an available domain, you purchase it directly through your own registrar account.",
+
+          paragraphs: [
+            "You make the purchase yourself rather than sending payment to us. This means the registration is directly associated with your own account from the beginning.",
+            "We stay with you during the process and make sure there is no confusion about which domain was purchased or who owns it."
+          ],
+
+          features: [
+            "You purchase the domain yourself",
+            "The domain is registered to your account",
+            "You receive the registration details",
+            "You remain responsible for renewal"
+          ]
+        },
+
+        {
+          id: "give-access",
+
+          subtitle: "Give us the access we need",
+
+          description:
+            "Once the domain has been purchased, you give us the technical access required to connect it to your website.",
+
+          paragraphs: [
+            "You do not need to give us your password. Where the registrar supports it, you can invite us as a collaborator or provide the appropriate DNS access.",
+            "This allows us to perform the technical work while you continue to own and control the account."
+          ],
+
+          features: [
+            "No password sharing",
+            "You remain the account owner",
+            "Technical access only",
+            "You can remove our access later"
+          ]
+        },
+
+        {
+          id: "connect-domain",
+
+          subtitle: "We connect your domain to your website",
+
+          description:
+            "Once we have the required access, we handle the technical configuration needed to connect your domain to your new website.",
+
+          paragraphs: [
+            "We configure the necessary DNS records and point your domain towards your website. You do not need to handle the technical configuration yourself.",
+            "Depending on the registrar and hosting provider, the changes may take a few hours to become fully active across the internet."
+          ],
+
+          features: [
+            "DNS configuration",
+            "Domain connected to your website",
+            "Technical setup handled by us",
+            "Connection tested before launch"
+          ]
+        },
+
+        {
+          id: "go-live",
+
+          subtitle: "Your website goes live",
+
+          description:
+            "Once the domain connection has been configured and tested, your website is ready to be accessed through your own domain.",
+
+          paragraphs: [
+            "Most domain connections become active within a few hours, although DNS changes can sometimes take up to 24 to 48 hours to fully propagate.",
+            "We check the connection and make sure your website is working correctly before considering the setup complete."
+          ],
+
+          features: [
+            "Your website is accessible through your domain",
+            "Domain connection tested",
+            "Technical setup completed",
+            "You retain ownership of everything"
+          ],
+
+          button: {
+            text: "Get Your Domain Set Up",
+            href: "/contact"
+          }
+        }
+      ]
+    }
   },
+
+
 
   /* ============================================================
      ABOUT PAGE

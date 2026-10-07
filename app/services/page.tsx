@@ -2,7 +2,7 @@
 import Services from "@/components/services";
 import { business } from "@/config/business";
 import Hero from "@/components/hero";
-import FeatureGrid from "@/components/FeatureGrid";
+import Walkthrough from "@/components/walkTrough";
 import NotOffered from "@/components/NotOffered";
 export default function Home() {
   return (
@@ -14,6 +14,9 @@ export default function Home() {
         services={business.services.contents}
         variant="full"
       />
+
+    <Walkthrough walkthrough={business.services.walkthrough} />
+
     <NotOffered
       title={business.notOffered.title}
       intro={business.notOffered.intro}
