@@ -15,16 +15,28 @@ export default function Navbar() {
 
          <Link href="/" className="flex items-center gap-3">
             <Image
-              src="Logo-removebg-preview.png" 
+              src={business.logoImage}
               alt={`${business.name} Logo`}
               width={40}
               height={40}
-              className="h-10 w-auto object-contain"
+              className="h-12 w-auto object-contain"
               priority
             />
-            <span className="text-2xl md:text-3xl font-heading font-bold text-text">
-              {business.name}
-            </span>
+
+            <span
+            className="
+              text-2xl md:text-2xl
+              font-heading font-semibold
+              tracking-tight
+              bg-gradient-to-r
+              from-blue-950
+              via-blue-700
+              to-blue-600
+              bg-clip-text
+              text-transparent
+            "
+          > TECH
+          </span>
           </Link>
 
           <div className="hidden md:flex gap-6">
