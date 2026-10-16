@@ -25,10 +25,10 @@ export const Valis = {
      ============================================================ */
 
   contact: {
-    phone: "(+263) 77 123 4567",
-    email: "info@ValisDigital.co.zw",
+    phone: "(+263) 77 893 5618",
+    email: "valistechnology@gmail.com",
     address: "Harare, Zimbabwe",
-    whatsapp: "0788237076",
+    whatsapp: "0778935618",
 
     socials: [
       { label: "Instagram", href: "https://instagram.com/talos", icon: "instagram" },
