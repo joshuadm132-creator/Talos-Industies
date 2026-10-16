@@ -700,79 +700,79 @@ export const Valis = {
      ============================================================ */
 
   About: {
-    intro: {
-      eyebrow: "About Us",
-      headline: "Building digital experiences for businesses ready to grow.",
-      description:
-        "We combine creativity, technology, and modern design to help businesses establish a strong presence in the digital world.",
-    },
-    title: "About Us",
-    content: [
-      {
-        id: "who-we-are",
-        subtitle: "Who We Are",
-        paragraphs: [
-          "We are a growing development and web design company focused on helping businesses establish a strong online presence.",
-          "Our team combines creativity, practical technology, and modern design to create professional, responsive, and user friendly digital experiences tailored to each client's needs.",
-          "Whether you're a startup, a small business, an organization, or an individual looking to broaden your brand in the digital world, we're here to turn your ideas into a website you can be proud of.",
-        ],
-        image: "/Logo-removebg-preview.png",
-      },
-      {
-        id: "mission",
-        subtitle: "Our Mission",
-        paragraphs: [
-          "Establishing powerful digital presences through high quality, thoughtfully designed websites and practical technology solutions.",
-        ],
-        features: [
-          "Create professional digital experiences",
-          "Help businesses establish a strong online presence",
-          "Build responsive and user friendly websites",
-          "Deliver technology tailored to each client's needs",
-        ],
-        image: "/images/about/mission.jpg",
-      },
-      {
-        id: "vision",
-        subtitle: "Our Vision",
-        paragraphs: [
-          "To become a leading provider of technical solutions in Southern Africa by 2035.",
-          "We aim to help businesses and organizations use technology to grow, connect with their audiences, and create lasting impact.",
-        ],
-        image: "/images/about/vision.jpg",
-      },
-    ],
-    motto: "Your Vision. Our Creation.",
+  title: "Who We Are",
+  intro: {
+    eyebrow: "About Us",
+    headline: "Building digital experiences for businesses ready to grow.",
+    description:
+      "We combine creativity, technology, and modern design to help businesses establish a strong presence in the digital world.",
   },
+  content: [
+    {
+      id: "story",
+      subtitle: "Our Story",
+      paragraphs: [
+        "Talos Industries is a Harare-based web development studio. We build modern, professional websites for small and growing businesses — sites that look the part, load fast, and are built to last.",
+        "We're a young team, and that works in your favour. Every project gets our full attention. There's no account manager between you and the people writing the code — you talk directly to the developers building your site.",
+      ],
+      features: [
+        "Direct access to the developers",
+        "Every project handled personally",
+        "No outsourced work, ever",
+      ],
+    },
+    {
+      id: "mission-vision",
+      subtitle: "Mission & Vision",
+      paragraphs: [
+        "Our mission is to help businesses establish a strong digital presence through high-quality, thoughtfully-designed websites that actually work — not templates dropped in and forgotten.",
+        "Our vision is to become a leading provider of technical solutions in Southern Africa — building sites that help businesses grow, connect with their audiences, and last.",
+      ],
+    },
+  ],
+},
 
   Values: {
-    title: "How We Operate",
-    content: [
-      {
-        id: "principles",
-        subtitle: "Our Working Principles",
-        paragraphs: [
-          "We build to last. Every site we ship is written by hand, tested on real devices, and handed over with documentation so you always know what you own.",
-          "We work in the open. Weekly demos, clear timelines, and no surprise invoices. If something changes, you hear it from us first.",
-        ],
-        features: [
-          "Human reviewed code, no shortcuts",
-          "Weekly progress demos",
-          "Transparent fixed pricing",
-          "You own the site and its code",
-        ],
-        button: { text: "Start a Project", href: "/contact" },
-      },
-      {
-        id: "commitments",
-        subtitle: "What We Commit To",
-        paragraphs: [
-          "Every project we take on gets a named point of contact on our side, a shared document with agreed scope, and a predictable monthly cost for ongoing care.",
-          "We would rather turn down work we cannot serve well than over promise and under deliver.",
-        ],
-      },
-    ],
-  },
+  title: "What We Stand For",
+  subtitle: "The principles that guide every project we take on.",
+  items: [
+    {
+      id: "quality",
+      title: "Quality First",
+      description: "Every line of code, every pixel, is written and reviewed with care.",
+    },
+    {
+      id: "transparency",
+      title: "Transparency",
+      description: "Clear pricing, weekly demos, no surprise invoices.",
+    },
+    {
+      id: "ownership",
+      title: "You Own It",
+      description: "The site and its code belong to you from day one. No lock-in.",
+    },
+    {
+      id: "craft",
+      title: "Real Craft",
+      description: "Human-reviewed code, not templates made by an wix or squarespace and forgotten.",
+    },
+    {
+      id: "partnership",
+      title: "Long-Term Partnership",
+      description: "We don't disappear after launch. Ongoing care is part of the deal.",
+    },
+    {
+      id: "communication",
+      title: "Plain English",
+      description: "We explain what we're doing and why, without jargon.",
+    },{
+  id: "hand-built",
+  title: "Hand-Built, Not Wix",
+  description:
+    "Your site is written by hand not assembled from a drag-and-drop builder. Full control, custom features, no platform limits.",
+},
+  ],
+},
 
   Team: {
     title: "Our Leadership",
@@ -800,12 +800,12 @@ export const Valis = {
           "Denzel drives the core software architecture and web development workflows across our client projects. He is currently pursuing a BSc (Hons) in Computer Science at the University of London and brings strong full stack engineering principles, database architecture expertise, and clean coding practices to our digital solutions. From crafting dynamic front end experiences to structuring reliable back end logic in Node.js and SQL, Denzel ensures every website is built to high modern standards.",
         ],
         features: [
-          "Full stack engineering",
+          "BSc Computer Science, University of London",
+          "Full-stack engineering",
           "Database architecture",
-          "Front end performance",
-          "Code quality and review",
+          "Node.js & SQL",
         ],
-        button: { text: "Contact Us", href: "/contact" },
+        button: { text: "Contact Individual", href: "https://joshuadm132-creator.github.io/Potfolio.github.io/index.html" },
       },
       {
         id: "panashe",

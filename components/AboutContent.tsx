@@ -20,14 +20,10 @@ type AboutContentProps = {
   contents: Content[];
 };
 
-export default function AboutContent({
-  title,
-  contents,
-}: AboutContentProps) {
+export default function AboutContent({ title, contents }: AboutContentProps) {
   return (
     <section className="py-24 px-6 bg-background">
       <div className="max-w-5xl mx-auto">
-
         <Reveal>
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-text uppercase text-center">
             {title}
@@ -35,22 +31,19 @@ export default function AboutContent({
         </Reveal>
 
         <div className="mt-16 space-y-24">
-
           {contents.map((content, index) => (
             <Reveal key={content.id} delay={index * 150}>
-
               <div
-                id={content.id}
-                className={`grid gap-10 md:grid-cols-2 md:items-center ${
-                  index % 2 === 1
+                className={`grid gap-10 md:items-center ${
+                  content.image ? "md:grid-cols-2" : "md:grid-cols-1"
+                } ${
+                  index % 2 === 1 && content.image
                     ? "md:[&>*:first-child]:order-2"
                     : ""
                 }`}
               >
-
                 {/* Text */}
                 <div>
-
                   {content.subtitle && (
                     <p className="text-sm font-semibold text-text-muted uppercase tracking-wider">
                       {content.subtitle}
@@ -58,10 +51,7 @@ export default function AboutContent({
                   )}
 
                   {content.paragraphs.map((paragraph, i) => (
-                    <p
-                      key={i}
-                      className="mt-4 text-text-muted leading-relaxed"
-                    >
+                    <p key={i} className="mt-4 text-text-muted leading-relaxed">
                       {paragraph}
                     </p>
                   ))}
@@ -73,9 +63,7 @@ export default function AboutContent({
                           key={i}
                           className="flex items-start gap-2 text-text"
                         >
-                          <span className="text-accent font-bold">
-                            ✓
-                          </span>
+                          <span className="text-accent font-bold">✓</span>
 
                           <span>{feature}</span>
                         </li>
@@ -91,12 +79,11 @@ export default function AboutContent({
                       {content.button.text}
                     </Link>
                   )}
-
                 </div>
 
-                {/* Image */}
+                {/* Image opptionally*/}
+                {content.image && (
                 <div className="aspect-[4/3] rounded-2xl bg-surface overflow-hidden">
-
                   {content.image ? (
                     <Image
                       src={content.image}
@@ -110,14 +97,11 @@ export default function AboutContent({
                       image coming soon
                     </div>
                   )}
-
                 </div>
-
+                )}
               </div>
-
             </Reveal>
           ))}
-
         </div>
       </div>
     </section>

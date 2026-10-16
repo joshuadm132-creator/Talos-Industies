@@ -4,10 +4,11 @@ import { business } from "@/config/business";
 import Hero from "@/components/hero";
 import Walkthrough from "@/components/walkTrough";
 import NotOffered from "@/components/NotOffered";
+import MapNavigation from "@/components/Map/MapNavigation";
 export default function Home() {
   return (
     <main>
-    
+    <MapNavigation/>
     <Services
         headline={business.services.headline}
         subheadline={business.services.subheadline}

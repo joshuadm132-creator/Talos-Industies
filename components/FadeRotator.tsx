@@ -7,6 +7,7 @@ type FadeRotatorProps = {
   interval?: number;
   fadeDuration?: number;
   minHeight?: number;
+  onChange?: (index: number) => void;
 };
 
 export default function FadeRotator({
@@ -14,64 +15,42 @@ export default function FadeRotator({
   interval = 3500,
   fadeDuration = 500,
   minHeight,
+  onChange,
 }: FadeRotatorProps) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (items.length <= 1) return;
-
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % items.length);
+      setIndex((prev) => {
+        const next = (prev + 1) % items.length;
+        onChange?.(next);
+        return next;
+      });
     }, interval);
-
-    //donno what this is below
     return () => clearInterval(timer);
-  }, [items.length, interval]);
+  }, [items.length, interval, onChange]);
 
   if (items.length === 0) return null;
 
   return (
-  <div className="grid">
-    {items.map((item, i) => (
-      <div
-        key={i}
-        style={{ transitionDuration: `${fadeDuration}ms` ,minHeight: minHeight ? `${minHeight}px` : undefined}}
-        className={`
-          col-start-1 row-start-1
-          transition-opacity ease-in-out
-          ${i === index ? "opacity-100" : "opacity-0 pointer-events-none"}
-        `}
-      >
-        {item}
-      </div>
-    ))}
-  </div>
-);
-}
-
-type MarqueeProps = {
-  children: ReactNode;
-  duration?: number;
-  direction?: "left" | "right";
-};
-
-export function Marquee({
-  children,
-  duration = 10,
-  direction = "left",
-}: MarqueeProps) {
-  return (
-    <div className="relative overflow-hidden">
-      <div
-        className="w-max animate-marquee-fade"
-        style={{
-          animationDuration: `${duration}s`,
-          animationDirection:
-            direction === "right" ? "reverse" : "normal",
-        }}
-      >
-        {children}
-      </div>
+    <div
+      className="relative"
+      style={{ minHeight: minHeight ? `${minHeight}px` : undefined }}
+    >
+      {items.map((item, i) => (
+        <div
+          key={i}
+          style={{ transitionDuration: `${fadeDuration}ms` }}
+          className={`transition-opacity ease-in-out ${
+            i === index
+              ? "opacity-100 relative"
+              : "opacity-0 absolute inset-0 pointer-events-none"
+          }`}
+        >
+          {item}
+        </div>
+      ))}
     </div>
   );
 }
