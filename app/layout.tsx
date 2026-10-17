@@ -20,13 +20,19 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  verification: {
+    google: '<meta name="google-site-verification" content="PDXehE1cbUnD9Ot9l_pY5HSxIW5BtWRK9QcwPTEcwsc" />',
+  },
 
   title: {
     default: `${site.name} | Web Design & Development in Zimbabwe`,
     template: `%s | ${site.name}`,
   },
+  
 
   description: site.description,
 
