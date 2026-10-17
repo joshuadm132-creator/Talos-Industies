@@ -1,12 +1,40 @@
-import type { MetadataRoute } from 'next';
+// app/sitemap.ts
+import type { MetadataRoute } from "next";
+import { site } from "@/config/businesses/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://talosindustries.co.zw';
+  const now = new Date();
+
   return [
-    { url: baseUrl, lastModified: new Date(), priority: 1.0 },
-    { url: `${baseUrl}/services`, lastModified: new Date(), priority: 0.9 },
-    { url: `${baseUrl}/pricing`, lastModified: new Date(), priority: 0.9 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), priority: 0.7 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), priority: 0.8 },
+    {
+      url: site.url,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+    {
+      url: `${site.url}/services`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${site.url}/pricing`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${site.url}/about`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${site.url}/contact`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
   ];
 }

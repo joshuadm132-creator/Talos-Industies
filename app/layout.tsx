@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
@@ -5,6 +6,7 @@ import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import { themeToCssVars } from "@/config/ThemeToCSS";
 import { business } from "@/config/business";
+import { site } from "@/config/businesses/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,92 +20,123 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-/* ============================================================
-   Metadata — drives <title>, <meta description>, OG tags
-   ============================================================ */
-
 export const metadata: Metadata = {
-  // metadataBase lets Next.js resolve relative URLs (OG images, canonicals)
-  metadataBase: new URL("https://talosindustries.co.zw"),
+  metadataBase: new URL(site.url),
 
-  // Page titles use this template: "Pricing | Talos Industries"
   title: {
-    default: business.name,
-    template: `%s | ${business.name}`,
+    default: `${site.name} | Web Design & Development in Zimbabwe`,
+    template: `%s | ${site.name}`,
   },
 
-  description: business.description,
+  description: site.description,
 
-  // OpenGraph — what shows when the site is shared on WhatsApp, LinkedIn, etc.
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+
   openGraph: {
-    title: business.name,
-    description: business.description,
-    url: "https://talosindustries.co.zw",
-    siteName: business.name,
-    locale: "en_ZW",
+    title: site.name,
+    description: site.description,
+    url: site.url,
+    siteName: site.name,
+    locale: site.locale,
     type: "website",
+    images: [
+      {
+        url: site.defaultOgImage,
+        width: 1200,
+        height: 630,
+        alt: `${site.name} — Web Design & Development`,
+      },
+    ],
   },
 
-  // Twitter / X cards
   twitter: {
     card: "summary_large_image",
-    title: business.name,
-    description: business.description,
+    title: site.name,
+    description: site.description,
+    // site: site.twitterHandle,
+    images: [site.defaultOgImage],
   },
 
-  // Tells Google the canonical host, prevents duplicate-content issues
-  alternates: {
-    canonical: "https://talosindustries.co.zw",
-  },
-
-  // Robots — indexable by default, but explicit
   robots: {
     index: true,
     follow: true,
     googleBot: {
       index: true,
       follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
+
+  // NOTE: no `alternates.canonical` here.
+  // Each page sets its own canonical (see page files below).
+  // The root layout should NOT declare a canonical because it would
+  // leak onto every page that forgets to override it.
 };
 
-/* ============================================================
-   JSON-LD — structured data for Google and AI answer engines.
-   Every value pulled from business config so the schema stays
-   in sync when the business changes.
-   ============================================================ */
+/* ---------------------------------------------------------------
+   JSON-LD: ProfessionalService (business identity)
+   Lives in the root layout so every page carries it.
+   --------------------------------------------------------------- */
 
-const jsonLd = {
+const professionalServiceJsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: business.name,
-  description: business.description,
-  url: "https://talosindustries.co.zw",
+  "@id": `${site.url}/#organization`,
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  logo: `${site.url}/images/logo.png`, // add this file
+  image: `${site.url}${site.defaultOgImage}`,
   telephone: business.contact.phone,
   email: business.contact.email,
   address: {
     "@type": "PostalAddress",
-    addressLocality: business.location.split(",")[0].trim(), // "Harare"
-    addressCountry: "ZW",
+    addressLocality: site.city,
+    addressCountry: site.country,
   },
-  areaServed: {
-    "@type": "Country",
-    name: "Zimbabwe",
-  },
+  areaServed: [
+    { "@type": "Country", name: "Zimbabwe" },
+    { "@type": "Place", name: "Southern Africa" },
+  ],
   serviceType: [
     "Web Design",
     "Web Development",
     "Website Maintenance",
     "Search Engine Optimisation",
     "Answer Engine Optimisation",
+    "domain name prividing"
   ],
-  // Social profiles — feeds Google's knowledge panel
+  knowsAbout: [
+    "Next.js development",
+    "React web applications",
+    "Technical SEO",
+     "Web design in Zimbabwe",
+    "Answer Engine Optimisation",
+    "E-commerce integration",
+    "Payment gateway integration in Zimbabwe",
+  ],
   sameAs: business.contact.socials.map((s) => s.href),
 };
 
-/* ============================================================
-   Root layout
-   ============================================================ */
+/* ---------------------------------------------------------------
+   JSON-LD: WebSite (enables sitelinks + AI engine attribution)
+   --------------------------------------------------------------- */
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  url: site.url,
+  name: site.name,
+  description: site.description,
+  publisher: { "@id": `${site.url}/#organization` },
+  inLanguage: "en-ZW",
+};
 
 export default function RootLayout({
   children,
@@ -112,14 +145,20 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="en-ZW"
       className={`${inter.variable} ${playfair.variable} h-full antialiased scroll-smooth`}
       style={themeToCssVars(business.theme)}
     >
       <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(professionalServiceJsonLd),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <Nav />
         {children}
