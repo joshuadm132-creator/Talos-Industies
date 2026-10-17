@@ -19,12 +19,13 @@ export default function ContactPage() {
   
 
       <Contact
+        content={business.contactContent}
         phone={business.contact.phone}
         email={business.contact.email}
         address={business.contact.address}
         whatsapp={business.contact.whatsapp}
         socials={business.contact.socials}
-        form={business.contact.form}
+        
       />
 
      

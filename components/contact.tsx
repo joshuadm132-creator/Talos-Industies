@@ -1,451 +1,952 @@
+
 "use client";
 
-import { useState, FormEvent } from "react";
-import {
-  SOCIAL_ICONS,
-  WhatsAppIcon,
-  type SocialIconName,
-} from "@/components/socialIcon";
+import { useState, type FormEvent } from "react";
 
-/* ---------- Inline icons ---------- */
-function MailIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m2 7 10 6 10-6" />
-    </svg>
-  );
-}
-
-function PhoneIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  );
-}
-
-function PinIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-}
-
-type SocialLink = {
-  label?: string;
-  href?: string;
-  icon: SocialIconName;
-};
-
-type ContactProps = {
-  phone: string;
-  email: string;
-  address: string;
-  whatsapp?: string;
-  socials: SocialLink[];
-  businessName?: string;
-  form?: {
+type ContactContent = {
+  eyebrow: string;
+  title: string;
+  highlightedTitle: string;
+  description: string;
+  detailsTitle: string;
+  detailsDescription: string;
+  formEyebrow: string;
+  formTitle: string;
+  formDescription: string;
+  fields: {
+    name: string;
+    phone: string;
+    message: string;
+  };
+  placeholders: {
+    name: string;
+    phone: string;
+    message: string;
+  };
+  submitLabel: string;
+  inquiries: {
+    eyebrow: string;
     title: string;
-    subtitle: string;
-    fields: {
-      name: string;
-      email: string;
-      phone: string;
-      message: string;
-    };
-    submitLabel: string;
-    successMessage: string;
+    description: string;
+    items: {
+      id: string;
+      title: string;
+      description: string;
+    }[];
   };
 };
 
+type SocialLink = {
+  label: string;
+  href: string;
+};
+
+type ContactProps = {
+  content: ContactContent;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  address: string;
+  socials?: SocialLink[];
+};
+
+const inputClass =
+  "mt-2 w-full min-w-0 rounded-none border border-border bg-background px-4 py-3 text-text placeholder:text-text-muted/70 outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30";
+
 export default function Contact({
-  phone,
+  content,
   email,
-  address,
+  phone,
   whatsapp,
+  address,
   socials = [],
-  businessName = "Website",
-  form,
 }: ContactProps) {
+  const [selectedTopic, setSelectedTopic] = useState("");
+  const [notice, setNotice] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
     message: "",
   });
 
-  const [method, setMethod] = useState<"email" | "whatsapp">("email");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle",
-  );
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  function updateField(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+    setNotice("");
+  }
 
-  const buildWhatsAppLink = () => {
-    if (!whatsapp) return "#";
+  function selectTopic(id: string) {
+    const topic = content.inquiries.items.find((item) => item.id === id);
+    if (!topic) return;
 
-    const lines = [
+    setSelectedTopic(id);
+    setFormData((previous) => ({
+      ...previous,
+      message: previous.message.trim()
+        ? previous.message
+        : `I'm interested in ${topic.title.toLowerCase()}.\n\n`,
+    }));
+
+    document.getElementById("contact-message")?.focus({ preventScroll: true });
+    document.getElementById("contact-form")?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "center",
+    });
+  }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setNotice("");
+
+    const number = whatsapp.replace(/\D/g, "");
+    if (!number) {
+      setNotice("WhatsApp is not configured. Please contact us by email.");
+      return;
+    }
+
+    const topic = content.inquiries.items.find((item) => item.id === selectedTopic);
+
+    const message = [
+      "Hello Valis Tech!",
+      "",
       `Name: ${formData.name}`,
-      `Email: ${formData.email}`,
-      formData.phone ? `Phone: ${formData.phone}` : null,
+      formData.phone ? `Phone: ${formData.phone}` : "",
+      topic ? `Enquiry: ${topic.title}` : "",
       "",
       formData.message,
     ]
       .filter(Boolean)
       .join("\n");
 
-    return `https://wa.me/${whatsapp}?text=${encodeURIComponent(lines)}`;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setErrorMsg("");
-
-    // WhatsApp needs name + message. Email needs name + email + message.
-    const requiresEmail = method === "email";
-
-    if (!formData.name.trim() || !formData.message.trim()) {
-      setStatus("error");
-      setErrorMsg("Please fill in your name and message.");
-      return;
-    }
-
-    if (requiresEmail && !formData.email.trim()) {
-      setStatus("error");
-      setErrorMsg("Please enter your email address.");
-      return;
-    }
-
-    if (requiresEmail && !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      setStatus("error");
-      setErrorMsg("That email address doesn't look right.");
-      return;
-    }
-
-    if (method === "whatsapp") {
-      window.open(buildWhatsAppLink(), "_blank", "noopener,noreferrer");
-      setStatus("sent");
-      setFormData({ name: "", email: "", phone: "", message: "" });
-      return;
-    }
-
-    setStatus("sending");
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
-          subject: `New message from ${formData.name}`,
-          from_name: businessName,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setStatus("sent");
-        setFormData({ name: "", email: "", phone: "", message: "" });
-      } else {
-        setStatus("error");
-        setErrorMsg(
-          result.message || "Something went wrong. Please try again.",
-        );
-      }
-    } catch {
-      setStatus("error");
-      setErrorMsg("Something went wrong. Please try again.");
-    }
-  };
+    window.open(
+      `https://wa.me/${number}?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
 
   return (
-    <section className="py-24 px-6 bg-surface">
-      <div className="max-w-6xl mx-auto">
-        {/* ---------- Section header ---------- */}
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs font-semibold text-text-muted uppercase tracking-[0.2em]">
-            Contact
+    <main className="bg-background text-text">
+      {/* INTRODUCTION */}
+      <section className="border-b bg-hero-bg border-border">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 md:py-20">
+          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+            <span className="h-px w-8 bg-green-500" />
+            {content.eyebrow}
+            <span className="h-px w-8 bg-primary" />
           </p>
-          <h2 className="mt-4 text-3xl md:text-4xl font-heading font-bold text-text">
-            Let's build something together
-          </h2>
-          <p className="mt-4 text-text-muted leading-relaxed">
-            Choose how you'd like to reach us — by email or WhatsApp. We reply
-            within one business day.
+
+          <h1 className="mt-6 max-w-4xl text-slate-200 text-4xl font-heading font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
+            {content.title}{" "}
+            <span className="text-primary">{content.highlightedTitle}</span>
+          </h1>
+
+          <p className="mt-5 max-w-2xl text-base leading-7 text-text-muted md:text-lg">
+            {content.description}
           </p>
         </div>
+      </section>
 
-        {/* ---------- Toggle ---------- */}
-        <div className="mt-10 flex justify-center">
-          <div className="inline-flex p-1.5 bg-background border border-border rounded-xl shadow-sm">
-            <button
-              type="button"
-              onClick={() => setMethod("email")}
-              aria-pressed={method === "email"}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-lg transition ${
-                method === "email"
-                  ? "bg-primary text-text-inverse shadow-sm"
-                  : "text-text-muted hover:text-text"
-              }`}
-            >
-              <MailIcon className="w-4 h-4" />
-              Send Email
-            </button>
+      {/* CONTACT DETAILS + FORM */}
+      <section>
+        <div className="mx-auto grid max-w-7xl gap-12 px-5 py-12 sm:px-8 md:py-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          
+          {/* CONTACT INFORMATION */}
+          <aside className="flex min-w-0 flex-col">
+            <div className="border-b border-border pb-5">
+              <h2 className="text-xl font-heading font-bold">{content.detailsTitle}</h2>
+              <p className="mt-2 text-sm leading-6 text-text-muted">
+                {content.detailsDescription}
+              </p>
+            </div>
 
-            <button
-              type="button"
-              onClick={() => setMethod("whatsapp")}
-              disabled={!whatsapp}
-              aria-pressed={method === "whatsapp"}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed ${
-                method === "whatsapp"
-                  ? "bg-emerald-500 text-white shadow-sm"
-                  : "text-text-muted hover:text-text"
-              }`}
-            >
-              <WhatsAppIcon className="w-4 h-4" />
-              WhatsApp
-            </button>
-          </div>
-        </div>
-
-        {/* ---------- Two columns ---------- */}
-        <div className="mt-16 grid gap-10 md:grid-cols-2">
-          {/* LEFT: Contact info cards */}
-          <div className="space-y-4">
-            {/* Phone card */}
-            <a
-              href={`tel:${phone.replace(/\s/g, "")}`}
-              className="group flex items-start gap-4 p-6 rounded-2xl bg-background border border-border hover:border-primary/40 hover:shadow-md transition"
-            >
-              <div className="w-12 h-12 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-text-inverse transition">
-                <PhoneIcon className="w-5 h-5" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-                  Phone
-                </p>
-                <p className="mt-1 text-lg font-medium text-text truncate">
-                  {phone}
-                </p>
-              </div>
-            </a>
-
-            {/* Email card */}
-            <a
-              href={`mailto:${email}`}
-              className="group flex items-start gap-4 p-6 rounded-2xl bg-background border border-border hover:border-primary/40 hover:shadow-md transition"
-            >
-              <div className="w-12 h-12 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-text-inverse transition">
-                <MailIcon className="w-5 h-5" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
+            <div className="divide-y divide-border">
+              <div className="py-5">
+                <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
                   Email
                 </p>
-                <p className="mt-1 text-lg font-medium text-text truncate">
+                <a
+                  href={`mailto:${email}`}
+                  className="mt-2 inline-block break-all font-medium text-text hover:text-primary"
+                >
                   {email}
-                </p>
+                </a>
               </div>
-            </a>
 
-            {/* Address card */}
-            <div className="flex items-start gap-4 p-6 rounded-2xl bg-background border border-border">
-              <div className="w-12 h-12 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                <PinIcon className="w-5 h-5" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-                  Address
+              <div className="py-5">
+                <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+                  Phone
                 </p>
-                <p className="mt-1 text-lg font-medium text-text">{address}</p>
+                <a
+                  href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+                  className="mt-2 inline-block font-medium text-text hover:text-primary"
+                >
+                  {phone}
+                </a>
+              </div>
+
+              <div className="py-5">
+                <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+                  Location
+                </p>
+                <p className="mt-2 font-medium">{address}</p>
               </div>
             </div>
 
-            {/* Socials */}
+            {/* SOCIAL LINKS */}
             {socials.length > 0 && (
-              <div className="pt-4">
-                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-                  Follow us
+              <div className="mt-8 border-t border-border pt-6">
+                <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+                  Find us elsewhere
                 </p>
-                <div className="mt-3 flex gap-3">
-                  {socials.map((social) => {
-                    const Icon = SOCIAL_ICONS[social.icon];
-                    if (!Icon) return null;
-                    return (
-                      <a
-                        key={social.label ?? social.href}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.label}
-                        className="w-11 h-11 flex items-center justify-center rounded-full bg-background border border-border text-text-muted hover:text-text-inverse hover:bg-hero-bg hover:border-hero-bg transition"
-                      >
-                        <Icon className="w-4 h-4" />
-                      </a>
-                    );
-                  })}
+                <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
+                  {socials.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-text-muted underline-offset-4 hover:text-primary hover:underline"
+                    >
+                      {social.label}
+                    </a>
+                  ))}
                 </div>
               </div>
             )}
+          </aside>
+
+          {/* CONTACT FORM */}
+          <div id="contact-form" className="min-w-0 border-t-2 border-primary pt-6 sm:pt-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              {content.formEyebrow}
+            </p>
+            <h2 className="mt-3 text-2xl font-heading font-bold sm:text-3xl">
+              {content.formTitle}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-text-muted">
+              {content.formDescription}
+            </p>
+
+            <form onSubmit={handleSubmit} className="mt-7 space-y-5">
+              {/* NAME */}
+              <div>
+                <label htmlFor="contact-name" className="block text-sm font-semibold">
+                  {content.fields.name} <span className="text-primary">*</span>
+                </label>
+                <input
+                  id="contact-name"
+                  name="name"
+                  autoComplete="name"
+                  required
+                  maxLength={100}
+                  value={formData.name}
+                  onChange={updateField}
+                  placeholder={content.placeholders.name}
+                  className={inputClass}
+                />
+              </div>
+
+              {/* PHONE */}
+              <div>
+                <label htmlFor="contact-phone" className="block text-sm font-semibold">
+                  {content.fields.phone}
+                </label>
+                <input
+                  id="contact-phone"
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  maxLength={30}
+                  value={formData.phone}
+                  onChange={updateField}
+                  placeholder={content.placeholders.phone}
+                  className={inputClass}
+                />
+              </div>
+
+              {/* MESSAGE */}
+              <div>
+                <label htmlFor="contact-message" className="block text-sm font-semibold">
+                  {content.fields.message} <span className="text-primary">*</span>
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows={5}
+                  required
+                  minLength={3}
+                  maxLength={5000}
+                  value={formData.message}
+                  onChange={updateField}
+                  placeholder={content.placeholders.message}
+                  className={`${inputClass} resize-y`}
+                />
+                <p className="mt-2 text-right text-xs text-text-muted">
+                  {formData.message.length}/5000 characters
+                </p>
+              </div>
+
+              {notice && (
+                <p
+                  role="status"
+                  className="border-l-2 border-primary bg-surface px-4 py-3 text-sm leading-6"
+                >
+                  {notice}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="flex min-h-12 w-full items-center justify-center gap-3 bg-emerald-600 px-5 py-3 font-semibold text-white transition-colors hover:bg-emerald-700"
+              >
+                Continue to WhatsApp <span aria-hidden="true">↗</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT CAN WE HELP WITH? */}
+      <section aria-labelledby="contact-inquiries-title" className="border-t border-border bg-surface">
+        <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 md:py-20">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                {content.inquiries.eyebrow}
+              </p>
+              <h2 id="contact-inquiries-title" className="mt-4 max-w-md text-3xl font-heading font-bold leading-tight sm:text-4xl">
+                {content.inquiries.title}
+              </h2>
+              <p className="mt-4 max-w-md text-sm leading-7 text-text-muted sm:text-base">
+                {content.inquiries.description}
+              </p>
+            </div>
+
+            <div>
+              {content.inquiries.items.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-pressed={selectedTopic === item.id}
+                  onClick={() => selectTopic(item.id)}
+                  className={`group grid w-full grid-cols-[2rem_minmax(0,1fr)_1.5rem] items-start gap-4 border-b border-border py-5 text-left transition-colors first:border-t hover:bg-primary/[0.04] sm:grid-cols-[3rem_minmax(0,1fr)_2rem] ${
+                    selectedTopic === item.id ? "bg-primary/[0.06]" : ""
+                  }`}
+                >
+                  <span className="pt-0.5 text-sm font-semibold tabular-nums text-primary">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-semibold text-text group-hover:text-primary">
+                      {item.title}
+                    </span>
+                    <span className="mt-1 block text-sm leading-6 text-text-muted">
+                      {item.description}
+                    </span>
+                  </span>
+                  <span aria-hidden="true" className="text-xl text-primary transition-transform group-hover:translate-x-1">
+                    ↗
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* RIGHT: Form */}
-          {form && (
-            <div className="bg-background rounded-2xl p-8 border border-border shadow-sm">
-              <h3 className="text-xl font-heading font-bold text-text">
-                {method === "whatsapp" ? "Send us a WhatsApp" : form.title}
-              </h3>
-              <p className="mt-2 text-sm text-text-muted">
-                {method === "whatsapp"
-                  ? "Fill in your details and we'll open WhatsApp with your message ready to send."
-                  : form.subtitle}
-              </p>
-
-              {status === "sent" ? (
-                <div className="mt-8 p-6 rounded-xl bg-accent/10 border border-accent/30 text-text">
-                  {method === "whatsapp"
-                    ? "WhatsApp opened in a new tab — press send there to deliver your message."
-                    : form.successMessage}
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                  <div>
-                    <label
-                      htmlFor="contact-name"
-                      className="block text-sm font-medium text-text"
-                    >
-                      {form.fields.name}
-                    </label>
-                    <input
-                      id="contact-name"
-                      name="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="mt-1 w-full px-4 py-2.5 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="contact-email"
-                      className="block text-sm font-medium text-text"
-                    >
-                      {form.fields.email}
-                      {method === "whatsapp" && (
-                        <span className="ml-2 text-xs font-normal text-text-muted">
-                          (optional)
-                        </span>
-                      )}
-                    </label>
-                    <input
-                      id="contact-email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="mt-1 w-full px-4 py-2.5 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="contact-phone"
-                      className="block text-sm font-medium text-text"
-                    >
-                      {form.fields.phone}
-                    </label>
-                    <input
-                      id="contact-phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="mt-1 w-full px-4 py-2.5 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="contact-message"
-                      className="block text-sm font-medium text-text"
-                    >
-                      {form.fields.message}
-                    </label>
-                    <textarea
-                      id="contact-message"
-                      name="message"
-                      rows={5}
-                      value={formData.message}
-                      onChange={handleChange}
-                      className="mt-1 w-full px-4 py-2.5 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition resize-none"
-                    />
-                  </div>
-
-                  {status === "error" && (
-                    <p className="text-sm text-red-600">{errorMsg}</p>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={status === "sending"}
-                    className={`w-full py-3 rounded-lg font-medium transition disabled:opacity-60 disabled:cursor-not-allowed ${
-                      method === "whatsapp"
-                        ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                        : "bg-primary text-text-inverse hover:bg-primary-hover"
-                    }`}
-                  >
-                    {status === "sending"
-                      ? "Sending..."
-                      : method === "whatsapp"
-                        ? "Open WhatsApp"
-                        : form.submitLabel}
-                  </button>
-                </form>
-              )}
-            </div>
-          )}
+          <p className="mt-8 border-t border-border pt-5 text-sm text-text-muted">
+            Every project starts with a conversation.{" "}
+            <span className="font-semibold text-text">Project quotes are free.</span>
+          </p>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 }
+
+
+// "use client";
+
+// import { useState, type FormEvent } from "react";
+
+// type ContactContent = {
+//   eyebrow: string;
+//   title: string;
+//   highlightedTitle: string;
+//   description: string;
+//   detailsTitle: string;
+//   detailsDescription: string;
+//   formEyebrow: string;
+//   formTitle: string;
+//   formDescription: string;
+//   channels: {
+//     email: string;
+//     whatsapp: string;
+//   };
+//   fields: {
+//     name: string;
+//     email: string;
+//     phone: string;
+//     message: string;
+//   };
+//   placeholders: {
+//     name: string;
+//     email: string;
+//     phone: string;
+//     message: string;
+//   };
+//   submitLabel: string;
+//   inquiries: {
+//     eyebrow: string;
+//     title: string;
+//     description: string;
+//     items: {
+//       id: string;
+//       title: string;
+//       description: string;
+//     }[];
+//   };
+// };
+
+// type SocialLink = {
+//   label: string;
+//   href: string;
+// };
+
+// type ContactProps = {
+//   content: ContactContent;
+//   email: string;
+//   phone: string;
+//   whatsapp: string;
+//   address: string;
+//   socials?: SocialLink[];
+// };
+
+// type ContactChannel = "email" | "whatsapp";
+
+// const inputClass =
+//   "mt-2 w-full min-w-0 rounded-none border border-border bg-background px-4 py-3 text-text placeholder:text-text-muted/70 outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30";
+
+// export default function Contact({
+//   content,
+//   email,
+//   phone,
+//   whatsapp,
+//   address,
+//   socials = [],
+// }: ContactProps) {
+//   const [channel, setChannel] =
+//     useState<ContactChannel>("email");
+
+//   const [selectedTopic, setSelectedTopic] =
+//     useState("");
+
+//   const [notice, setNotice] = useState("");
+
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     email: "",
+//     phone: "",
+//     message: "",
+//   });
+
+//   function updateField(
+//     e: React.ChangeEvent<
+//       HTMLInputElement | HTMLTextAreaElement
+//     >
+//   ) {
+//     const { name, value } = e.target;
+
+//     setFormData((previous) => ({
+//       ...previous,
+//       [name]: value,
+//     }));
+
+//     setNotice("");
+//   }
+
+//   function selectTopic(id: string) {
+//     const topic = content.inquiries.items.find(
+//       (item) => item.id === id
+//     );
+
+//     if (!topic) return;
+
+//     setSelectedTopic(id);
+
+//     setFormData((previous) => ({
+//       ...previous,
+//       message: previous.message.trim()
+//         ? previous.message
+//         : `I'm interested in ${topic.title.toLowerCase()}.\n\n`,
+//     }));
+
+//     document
+//       .getElementById("contact-message")
+//       ?.focus({ preventScroll: true });
+
+//     document.getElementById("contact-form")?.scrollIntoView({
+//       behavior: window.matchMedia(
+//         "(prefers-reduced-motion: reduce)"
+//       ).matches
+//         ? "auto"
+//         : "smooth",
+//       block: "center",
+//     });
+//   }
+
+//   function handleSubmit(e: FormEvent<HTMLFormElement>) {
+//     e.preventDefault();
+//     setNotice("");
+
+//     if (channel === "email") {
+//       // Email delivery will be connected to a server endpoint
+//       // in the next implementation step.
+//       setNotice(
+//         "The contact form is ready for email integration."
+//       );
+//       return;
+//     }
+
+//     const number = whatsapp.replace(/\D/g, "");
+
+//     if (!number) {
+//       setNotice(
+//         "WhatsApp is not configured. Please contact us by email."
+//       );
+//       return;
+//     }
+
+//     const topic = content.inquiries.items.find(
+//       (item) => item.id === selectedTopic
+//     );
+
+//     const message = [
+//       "Hello Valis Tech!",
+//       "",
+//       `Name: ${formData.name}`,
+//       formData.email
+//         ? `Email: ${formData.email}`
+//         : "",
+//       formData.phone
+//         ? `Phone: ${formData.phone}`
+//         : "",
+//       topic ? `Enquiry: ${topic.title}` : "",
+//       "",
+//       formData.message,
+//     ]
+//       .filter(Boolean)
+//       .join("\n");
+
+//     window.open(
+//       `https://wa.me/${number}?text=${encodeURIComponent(message)}`,
+//       "_blank",
+//       "noopener,noreferrer"
+//     );
+//   }
+
+//   return (
+//     <main className="bg-background text-text">
+//       {/* INTRODUCTION */}
+//       <section className="border-b border-border">
+//         <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 md:py-20">
+//           <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+//             <span className="h-px w-8 bg-green-700" />
+//             {content.eyebrow}
+//             <span className="h-px w-8 bg-primary" />
+//           </p>
+
+//           <h1 className="mt-6 max-w-4xl text-4xl font-heading font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
+//             {content.title}{" "}
+//             <span className="text-primary">
+//               {content.highlightedTitle}
+//             </span>
+//           </h1>
+
+//           <p className="mt-5 max-w-2xl text-base leading-7 text-text-muted md:text-lg">
+//             {content.description}
+//           </p>
+//         </div>
+//       </section>
+
+//       {/* CONTACT DETAILS + FORM */}
+//       <section>
+//         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-12 sm:px-8 md:py-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+//           {/* CONTACT INFORMATION */}
+//           <aside className="flex min-w-0 flex-col">
+//             <div className="border-b border-border pb-5">
+//               <h2 className="text-xl font-heading font-bold">
+//                 {content.detailsTitle}
+//               </h2>
+
+//               <p className="mt-2 text-sm leading-6 text-text-muted">
+//                 {content.detailsDescription}
+//               </p>
+//             </div>
+
+//             <div className="divide-y divide-border">
+//               <div className="py-5">
+//                 <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+//                   Email
+//                 </p>
+
+//                 <a
+//                   href={`mailto:${email}`}
+//                   className="mt-2 inline-block break-all font-medium text-text hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+//                 >
+//                   {email}
+//                 </a>
+//               </div>
+
+//               <div className="py-5">
+//                 <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+//                   Phone
+//                 </p>
+
+//                 <a
+//                   href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+//                   className="mt-2 inline-block font-medium text-text hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+//                 >
+//                   {phone}
+//                 </a>
+//               </div>
+
+//               <div className="py-5">
+//                 <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+//                   Location
+//                 </p>
+
+//                 <p className="mt-2 font-medium">{address}</p>
+//               </div>
+//             </div>
+
+//             {/* DIRECT WHATSAPP BUTTON */}
+//             <div className="mt-6 border-t border-border pt-6">
+//               <p className="text-sm leading-6 text-text-muted">
+//                 Prefer a quick conversation? Connect with us
+//                 directly.
+//               </p>
+
+//               <a
+//                 href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`}
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-3 bg-emerald-600 px-5 py-3 font-semibold text-white transition-colors hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+//               >
+//                 <svg
+//                   aria-hidden="true"
+//                   viewBox="0 0 24 24"
+//                   fill="none"
+//                   stroke="currentColor"
+//                   strokeWidth="1.8"
+//                   className="h-5 w-5"
+//                 >
+//                   <path d="M20 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20l1.2-4.4A8.4 8.4 0 1 1 20 11.5Z" />
+//                   <path d="M8.5 8.3c.3-.5.5-.5.8-.5h.4c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4 0 .7.5.9 1.3 1.6 2.2 2.1.3.2.5.2.7-.1l.8-.9c.2-.2.4-.2.6-.1l1.7.8c.3.1.4.3.4.5 0 .4-.2 1.2-.7 1.6-.5.5-1.2.8-2 .7-1.1-.1-2.5-.7-3.8-1.9-1.1-1-2-2.3-2.3-3.4-.3-1.1.1-2.2.6-3Z" />
+//                 </svg>
+
+//                 Open WhatsApp
+//                 <span aria-hidden="true">↗</span>
+//               </a>
+//             </div>
+
+//             {/* SOCIAL LINKS */}
+//             {socials.length > 0 && (
+//               <div className="mt-8 border-t border-border pt-6">
+//                 <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+//                   Find us elsewhere
+//                 </p>
+
+//                 <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
+//                   {socials.map((social) => (
+//                     <a
+//                       key={social.label}
+//                       href={social.href}
+//                       target="_blank"
+//                       rel="noopener noreferrer"
+//                       className="text-sm text-text-muted underline-offset-4 hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+//                     >
+//                       {social.label}
+//                     </a>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+//           </aside>
+
+//           {/* CONTACT FORM */}
+//           <div
+//             id="contact-form"
+//             className="min-w-0 border-t-2 border-primary pt-6 sm:pt-8"
+//           >
+//             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+//               {content.formEyebrow}
+//             </p>
+
+//             <h2 className="mt-3 text-2xl font-heading font-bold sm:text-3xl">
+//               {content.formTitle}
+//             </h2>
+
+//             <p className="mt-3 text-sm leading-6 text-text-muted">
+//               {content.formDescription}
+//             </p>
+
+//             <form
+//               onSubmit={handleSubmit}
+//               className="mt-7 space-y-5"
+//             >
+//               {/* CHANNEL TOGGLE */}
+//               <fieldset>
+//                 <legend className="mb-3 text-sm font-semibold">
+//                   How would you like to contact us?
+//                 </legend>
+
+//                 <div className="grid grid-cols-2 border border-border">
+//                   <button
+//                     type="button"
+//                     aria-pressed={channel === "email"}
+//                     onClick={() => {
+//                       setChannel("email");
+//                       setNotice("");
+//                     }}
+//                     className={`min-h-12 px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${
+//                       channel === "email"
+//                         ? "bg-primary text-white"
+//                         : "bg-background text-text-muted hover:bg-surface"
+//                     }`}
+//                   >
+//                     {content.channels.email}
+//                   </button>
+
+//                   <button
+//                     type="button"
+//                     aria-pressed={channel === "whatsapp"}
+//                     onClick={() => {
+//                       setChannel("whatsapp");
+//                       setNotice("");
+//                     }}
+//                     className={`min-h-12 border-l border-border px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${
+//                       channel === "whatsapp"
+//                         ? "bg-emerald-600 text-white"
+//                         : "bg-background text-text-muted hover:bg-surface"
+//                     }`}
+//                   >
+//                     {content.channels.whatsapp}
+//                   </button>
+//                 </div>
+
+//                 <p className="mt-3 text-sm leading-6 text-text-muted">
+//                   {channel === "email"
+//                     ? "Send an enquiry through our website."
+//                     : "Complete your message and continue to WhatsApp to send it."}
+//                 </p>
+//               </fieldset>
+
+//               {/* NAME */}
+//               <div>
+//                 <label
+//                   htmlFor="contact-name"
+//                   className="block text-sm font-semibold"
+//                 >
+//                   {content.fields.name}{" "}
+//                   <span className="text-primary">*</span>
+//                 </label>
+
+//                 <input
+//                   id="contact-name"
+//                   name="name"
+//                   autoComplete="name"
+//                   required
+//                   maxLength={100}
+//                   value={formData.name}
+//                   onChange={updateField}
+//                   placeholder={content.placeholders.name}
+//                   className={inputClass}
+//                 />
+//               </div>
+
+//               {/* EMAIL + PHONE */}
+//               <div className="grid gap-5 sm:grid-cols-2">
+//                 <div>
+//                   <label
+//                     htmlFor="contact-email"
+//                     className="block text-sm font-semibold"
+//                   >
+//                     {content.fields.email}
+//                     {channel === "email" && (
+//                       <span className="text-primary"> *</span>
+//                     )}
+//                   </label>
+
+//                   <input
+//                     id="contact-email"
+//                     name="email"
+//                     type="email"
+//                     autoComplete="email"
+//                     required={channel === "email"}
+//                     maxLength={254}
+//                     value={formData.email}
+//                     onChange={updateField}
+//                     placeholder={content.placeholders.email}
+//                     className={inputClass}
+//                   />
+//                 </div>
+
+//                 <div>
+//                   <label
+//                     htmlFor="contact-phone"
+//                     className="block text-sm font-semibold"
+//                   >
+//                     {content.fields.phone}
+//                   </label>
+
+//                   <input
+//                     id="contact-phone"
+//                     name="phone"
+//                     type="tel"
+//                     autoComplete="tel"
+//                     maxLength={30}
+//                     value={formData.phone}
+//                     onChange={updateField}
+//                     placeholder={content.placeholders.phone}
+//                     className={inputClass}
+//                   />
+//                 </div>
+//               </div>
+
+//               {/* MESSAGE */}
+//               <div>
+//                 <label
+//                   htmlFor="contact-message"
+//                   className="block text-sm font-semibold"
+//                 >
+//                   {content.fields.message}{" "}
+//                   <span className="text-primary">*</span>
+//                 </label>
+
+//                 <textarea
+//                   id="contact-message"
+//                   name="message"
+//                   rows={5}
+//                   required
+//                   minLength={3}
+//                   maxLength={5000}
+//                   value={formData.message}
+//                   onChange={updateField}
+//                   placeholder={content.placeholders.message}
+//                   className={`${inputClass} resize-y`}
+//                 />
+
+//                 <p className="mt-2 text-right text-xs text-text-muted">
+//                   {formData.message.length}/5000 characters
+//                 </p>
+//               </div>
+
+//               {notice && (
+//                 <p
+//                   role="status"
+//                   className="border-l-2 border-primary bg-surface px-4 py-3 text-sm leading-6"
+//                 >
+//                   {notice}
+//                 </p>
+//               )}
+
+//               <button
+//                 type="submit"
+//                 className={`flex min-h-12 w-full items-center justify-center gap-3 px-5 py-3 font-semibold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+//                   channel === "whatsapp"
+//                     ? "bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-500"
+//                     : "bg-primary hover:bg-primary-hover focus-visible:ring-primary"
+//                 }`}
+//               >
+//                 {channel === "email"
+//                   ? content.submitLabel
+//                   : "Continue to WhatsApp"}
+
+//                 <span aria-hidden="true">↗</span>
+//               </button>
+//             </form>
+//           </div>
+//         </div>
+//       </section>
+
+//       {/* WHAT CAN WE HELP WITH? */}
+//       <section
+//         aria-labelledby="contact-inquiries-title"
+//         className="border-t border-border bg-surface"
+//       >
+//         <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 md:py-20">
+//           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+//             <div>
+//               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+//                 {content.inquiries.eyebrow}
+//               </p>
+
+//               <h2
+//                 id="contact-inquiries-title"
+//                 className="mt-4 max-w-md text-3xl font-heading font-bold leading-tight sm:text-4xl"
+//               >
+//                 {content.inquiries.title}
+//               </h2>
+
+//               <p className="mt-4 max-w-md text-sm leading-7 text-text-muted sm:text-base">
+//                 {content.inquiries.description}
+//               </p>
+//             </div>
+
+//             <div>
+//               {content.inquiries.items.map((item, index) => (
+//                 <button
+//                   key={item.id}
+//                   type="button"
+//                   aria-pressed={selectedTopic === item.id}
+//                   onClick={() => selectTopic(item.id)}
+//                   className={`group grid w-full grid-cols-[2rem_minmax(0,1fr)_1.5rem] items-start gap-4 border-b border-border py-5 text-left transition-colors first:border-t hover:bg-primary/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:grid-cols-[3rem_minmax(0,1fr)_2rem] ${
+//                     selectedTopic === item.id
+//                       ? "bg-primary/[0.06]"
+//                       : ""
+//                   }`}
+//                 >
+//                   <span className="pt-0.5 text-sm font-semibold tabular-nums text-primary">
+//                     {String(index + 1).padStart(2, "0")}
+//                   </span>
+
+//                   <span className="min-w-0">
+//                     <span className="block font-semibold text-text group-hover:text-primary">
+//                       {item.title}
+//                     </span>
+
+//                     <span className="mt-1 block text-sm leading-6 text-text-muted">
+//                       {item.description}
+//                     </span>
+//                   </span>
+
+//                   <span
+//                     aria-hidden="true"
+//                     className="text-xl text-primary transition-transform group-hover:translate-x-1"
+//                   >
+//                     ↗
+//                   </span>
+//                 </button>
+//               ))}
+//             </div>
+//           </div>
+
+//           <p className="mt-8 border-t border-border pt-5 text-sm text-text-muted">
+//             Every project starts with a conversation.{" "}
+//             <span className="font-semibold text-text">
+//               Project quotes are free.
+//             </span>
+//           </p>
+//         </div>
+//       </section>
+//     </main>
+//   );
+// }

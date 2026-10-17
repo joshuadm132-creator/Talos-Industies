@@ -28,7 +28,7 @@ export const Valis = {
     phone: "(+263) 77 893 5618",
     email: "valistechnology@gmail.com",
     address: "Harare, Zimbabwe",
-    whatsapp: "0778935618",
+    whatsapp: "+263778935618",
 
     socials: [
       { label: "Instagram", href: "https://instagram.com/talos", icon: "instagram" },
@@ -50,6 +50,76 @@ export const Valis = {
       successMessage: "Thanks. We'll be in touch soon.",
     },
   },
+
+contactContent: {
+  eyebrow: "CONTACT VALIS",
+  title: "Let's build",
+  highlightedTitle: "something meaningful.",
+  description:
+    "Have an idea, a question, or a project in mind? Tell us what you're working on and let's explore what we can create together.",
+
+  detailsTitle: "Get in touch",
+  detailsDescription: "We'd love to hear from you.",
+
+  formEyebrow: "START A CONVERSATION",
+  formTitle: "Send us a message",
+  formDescription: "Tell us a little about your project.",
+
+  channels: {
+    email: "Email",
+    whatsapp: "WhatsApp",
+  },
+
+  fields: {
+    name: "Your name",
+    email: "Email address",
+    phone: "Phone (optional)",
+    message: "Tell us about your project",
+  },
+
+  placeholders: {
+    name: "What should we call you?",
+    email: "you@example.com",
+    phone: "+263...",
+    message: "Tell us about your idea, question, or project...",
+  },
+
+  submitLabel: "Send enquiry",
+
+  inquiries: {
+    eyebrow: "WHAT CAN WE HELP WITH?",
+    title: "Not sure where to start?",
+    description:
+      "You don't need all the answers yet. Tell us what you have in mind and we'll help you work out the next step.",
+    items: [
+      {
+        id: "maintenance",
+        title: "Website maintenance",
+        description:
+          "Updates, fixes, performance improvements and ongoing support.",
+      },
+      {
+        id: "custom-builds",
+        title: "Custom builds",
+        description:
+          "New websites and digital solutions designed around your needs.",
+      },
+      {
+        id: "special-features",
+        title: "Special features",
+        description:
+          "Integrations, payment gateways and functionality tailored to your project.",
+      },
+      {
+        id: "pricing",
+        title: "Pricing and free quotes",
+        description:
+          "Discuss your requirements and get a free, no-obligation project quote.",
+      },
+    ],
+  },
+},
+
 
   /* ============================================================
      NAVIGATION
