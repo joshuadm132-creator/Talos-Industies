@@ -83,7 +83,7 @@ const professionalServiceJsonLd = {
   name: site.name,
   description: site.description,
   url: site.url,
-  logo: `${site.url}/images/logo.png`, 
+  logo: `${site.url}ValisLogo.png`, 
   image: `${site.url}${site.defaultOgImage}`,
   telephone: business.contact.phone,
   email: business.contact.email,
