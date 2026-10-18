@@ -20,19 +20,17 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-
-
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   verification: {
-    google: '<meta name="google-site-verification" content="PDXehE1cbUnD9Ot9l_pY5HSxIW5BtWRK9QcwPTEcwsc" />',
+    // FIX 1: Only the token string, not the full HTML tag
+    google: "PDXehE1cbUnD9Ot9l_pY5HSxIW5BtWRK9QcwPTEcwsc",
   },
 
   title: {
     default: `${site.name} | Web Design & Development in Zimbabwe`,
     template: `%s | ${site.name}`,
   },
-  
 
   description: site.description,
 
@@ -62,7 +60,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: site.name,
     description: site.description,
-    // site: site.twitterHandle,
     images: [site.defaultOgImage],
   },
 
@@ -77,17 +74,7 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-
-  // NOTE: no `alternates.canonical` here.
-  // Each page sets its own canonical (see page files below).
-  // The root layout should NOT declare a canonical because it would
-  // leak onto every page that forgets to override it.
 };
-
-/* ---------------------------------------------------------------
-   JSON-LD: ProfessionalService (business identity)
-   Lives in the root layout so every page carries it.
-   --------------------------------------------------------------- */
 
 const professionalServiceJsonLd = {
   "@context": "https://schema.org",
@@ -96,7 +83,7 @@ const professionalServiceJsonLd = {
   name: site.name,
   description: site.description,
   url: site.url,
-  logo: `${site.url}/images/logo.png`, // add this file
+  logo: `${site.url}/images/logo.png`, 
   image: `${site.url}${site.defaultOgImage}`,
   telephone: business.contact.phone,
   email: business.contact.email,
@@ -115,23 +102,19 @@ const professionalServiceJsonLd = {
     "Website Maintenance",
     "Search Engine Optimisation",
     "Answer Engine Optimisation",
-    "domain name prividing"
+    "Domain Name Registration", // Fixed typo
   ],
   knowsAbout: [
     "Next.js development",
     "React web applications",
     "Technical SEO",
-     "Web design in Zimbabwe",
+    "Web design in Zimbabwe",
     "Answer Engine Optimisation",
     "E-commerce integration",
     "Payment gateway integration in Zimbabwe",
   ],
   sameAs: business.contact.socials.map((s) => s.href),
 };
-
-/* ---------------------------------------------------------------
-   JSON-LD: WebSite (enables sitelinks + AI engine attribution)
-   --------------------------------------------------------------- */
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
@@ -141,7 +124,7 @@ const websiteJsonLd = {
   name: site.name,
   description: site.description,
   publisher: { "@id": `${site.url}/#organization` },
-  inLanguage: "en-ZW",
+  inLanguage: "en-ZW", // FIX add languages sring
 };
 
 export default function RootLayout({
@@ -166,6 +149,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
+
         <Nav />
         {children}
         <Footer />
